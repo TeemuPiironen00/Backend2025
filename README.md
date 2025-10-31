@@ -36,9 +36,13 @@ Asiakas lähettää JSON-muotoisen viestin osoitteeseen /api/messages.
 MessagesController.PostMessage vastaanottaa pyynnön ja kutsuu metodia _messageService.CreateMessageAsync(message).
 MessageService muuntaa DTO:n Message-olioksi metodilla DTOToMessageAsync.
 Tässä vaiheessa palvelu:
+
 •	kopioi otsikon, sisällön ja Id-arvon DTO:sta
+
 •	hakee lähettäjän ja vastaanottajan User-objektit käyttäjänimien perusteella metodilla IUserRepository.GetUserAsync
+
 •	jos PrevMessage on annettu, lataa edellisen viestin ja linkittää sen uuteen viestiin
+
 Palvelu antaa täytetyn Message-olion repositorylle, joka kutsuu metodia IMessageRepository.CreateMessageAsync. MessageRepository lisää viestin Entity Framework Core -kontekstiin ja suorittaa SaveChangesAsync(). Tällöin Entity Framework tallentaa uuden rivin tietokantaan ja generoi tarvittavat automaattiset arvot.
 Tallennettu Message-olio palautetaan palvelulle, joka muuntaa sen takaisin MessageDTO:ksi ja palauttaa kontrollerille.
 Kontrolleri vastaa asiakkaalle HTTP 201 Created -statuksella ja palauttaa luodun viestin tiedot.
